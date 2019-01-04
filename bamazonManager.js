@@ -69,7 +69,6 @@ function addInventory() {
       }
       pickProduct(productList);
     });
-
 }
 
 function pickProduct(productList){
@@ -102,7 +101,25 @@ function pickProduct(productList){
 }
 
 function addProduct(){
+    var departmentListQuery = "SELECT department_name from departments;";
+    var departmentList=[];
+    console.log(departmentListQuery);
+    connection.query(departmentListQuery, [], function(error, results) {
+      if (error) throw error;
+      for (i = 0; i < results.length; i++) { 
+        console.log(
+          results[i].department_name
+        );
+        departmentList[i]=results[i].department_name;
+      }
+      pickDepartment(departmentList);
+    });
+  }
+
+function pickDepartment(departmentList){
   console.log("add a product!");
+  console.log("departmentList contains:");
+  console.log(departmentList);
   inquirer
   .prompt([
     {
@@ -114,7 +131,7 @@ function addProduct(){
       type: "list",
       message: "Which department does the product belong in?",
       name: "productDepartment",
-      choices:["Appliances", "Electronics","Furnishings"]
+      choices:departmentList
     },
     {
       type:"input",
@@ -137,6 +154,7 @@ function addProduct(){
     console.log("The initial stock quantity is:");
     console.log(response.productStock);
     var newProductQuery = 'INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales ) VALUES (?, ?, ?, ?, 0);';
+    console.log(newProductQuery);
     connection.query(newProductQuery, [response.productName, response.productDepartment, response.productPrice, response.productStock]);
     connection.end();
   });
