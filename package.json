@@ -1,21 +1,13 @@
 {
-  "name": "week12mysql",
+  "name": "week12-homework",
   "version": "1.0.0",
   "description": "",
   "main": "bamazonCustomer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neilfr/week12mysql.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/neilfr/week12mysql/issues"
-  },
-  "homepage": "https://github.com/neilfr/week12mysql#readme",
   "dependencies": {
     "inquirer": "^6.2.1",
     "mysql": "^2.16.0"

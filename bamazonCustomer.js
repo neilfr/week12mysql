@@ -2,86 +2,83 @@ var inquirer = require("inquirer");
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
-    host: "localhost",
-    port:3306,
-    user:"root",
-    password: "root",
-    database: "bamazon_db"
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: "root",
+  database: "bamazon_db"
 });
 
-connection.connect();
-
-var query = 'SELECT * from products;';
-console.log(query);
-connection.query(query, [], function (error, results, fields) {
-    if(error) throw error;
-    for(i=0;i<results.length;i++){
-        console.log(results[i].item_id+', '+results[i].product_name+', '+results[i].department_name+', '+results[i].price+', '+results[i].stock_quantity);
+function processOrder(productId, orderQty) {
+  var productInfoQuery = "Select * from products where item_id = ?;";
+  console.log(productInfoQuery);
+  connection.query(productInfoQuery, [productId], function(error, results) {
+    if (error) throw error;
+    console.log(results[0].product_name);
+    var newStockLevel = results[0].stock_quantity - orderQty;
+    if (newStockLevel < 0) {
+      console.log("Insufficient quantity!");
+    } else {
+      console.log("We have enough!");
+      var purchaseCost = results[0].price * orderQty;
+      console.log("The total cost of your purchase is: $" + purchaseCost);
+      console.log("The new stock level is: " + newStockLevel);
+      var updateStockLevelQuery =
+        "UPDATE products SET stock_quantity = ? WHERE item_id = ?";
+      console.log(updateStockLevelQuery);
+      connection.query(updateStockLevelQuery, [newStockLevel, productId]);
     }
     connection.end();
   });
+}
 
-/*
-inquirer.prompt([
-   {
-       type: "list",
-       message: "Would you like to Bid or Post an item?",
-       choices: ["Post an Item", "Bid on an Item"],
-       name: "command"
-   }
-]).then(function(inquirerResponse){
-   if(inquirerResponse.command === "Post an Item") {
-       inquirer.prompt([
-           {
-               type: "input",
-               message: "What is the name of your item for bid?",
-               name: "name"
-           },
-           {
-               type: "input",
-               message: "Please provide a description of this item.",
-               name: "description"
-           },
-           {
-               type: "input",
-               message: "What is the minimum starting bid?",
-               name: "bid"
-           }
-       ]).then(function(postResponse){
-           console.log(postResponse);
-           console.log("post response description is:"+postResponse.description);
-           var query = 'INSERT INTO items (name, description, bid) VALUES (?, ?, ?);';
-           console.log(query); 
-           connection.query(query, [postResponse.name,postResponse.description,postResponse.bid], function(err,response){
-                if(err) throw err;
-                console.log(response);
-                connection.end();
-            });
-       })
-       
-   }
-});
-*/
-
-/*
-function postItem(){
- //   var query="SELECT * FROM songs WHERE ? = ?";
-   // var query = "SELECT * FROM items"
-    var query = 'INSERT INTO items (name, description, bid) VALUES (?, ?, ?);';
-    console.log(query);
-   // console.log("inquirer description is:"+postResponse.description);
-  /*  connection.query(query, [], function(err,response){
-        if(err) throw err;
-        console.log(response);
-        connection.end();
-    
+function getOrder() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter the ID of the product you wish to purchase",
+        name: "productId"
+      },
+      {
+        type: "input",
+        message: "How many units would you like to purchase?",
+        name: "orderQty"
+      }
+    ])
+    .then(function(response) {
+      console.log("product id you entered is:");
+      console.log(response.productId);
+      console.log("the quantity ordered is:");
+      console.log(response.orderQty);
+      processOrder(response.productId, response.orderQty);
     });
-    */
-/*    connection.query(query,[action,whowhat] ,function(err,response){
-        if(err) throw err;
-        console.log(response);
-        connection.end();
-    });
-*/
+}
 
+function displayStock() {
+  var displayStockQuery = "SELECT * from products;";
+  console.log(displayStockQuery);
+  connection.query(displayStockQuery, [], function(error, results) {
+    if (error) throw error;
+    console.log("ID, Name, Department, Price, Stock");
+    for (i = 0; i < results.length; i++) {
+      console.log(
+        results[i].item_id +
+          ", " +
+          results[i].product_name +
+          ", " +
+          results[i].department_name +
+          ", $" +
+          results[i].price +
+          ", " +
+          results[i].stock_quantity
+      );
+    }
 
+    getOrder();
+  });
+}
+
+connection.connect();
+
+displayStock();
