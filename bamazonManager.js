@@ -99,8 +99,47 @@ function pickProduct(productList){
       connection.query(addStockQuery, [response.addQty, response.product]);
       connection.end();
     });
+}
 
-    
+function addProduct(){
+  console.log("add a product!");
+  inquirer
+  .prompt([
+    {
+      type:"input",
+      message: "What is the name of the product you would like to add?",
+      name: "productName"
+    },
+    {
+      type: "list",
+      message: "Which department does the product belong in?",
+      name: "productDepartment",
+      choices:["Appliances", "Electronics","Furnishings"]
+    },
+    {
+      type:"input",
+      message: "What is the price of the product?",
+      name: "productPrice"
+    },
+    {
+      type:"input",
+      message: "What is the initial stock quantity?",
+      name: "productStock"
+    }
+  ])
+  .then(function(response) {
+    console.log("The product you want to add is:");
+    console.log(response.productName);
+    console.log("The product department is:");
+    console.log(response.productDepartment);
+    console.log("The product price is:");
+    console.log(response.productPrice);
+    console.log("The initial stock quantity is:");
+    console.log(response.productStock);
+    var newProductQuery = 'INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?);';
+    connection.query(newProductQuery, [response.productName, response.productDepartment, response.productPrice, response.productStock]);
+    connection.end();
+  });
 }
 
 function selectAction() {
@@ -131,9 +170,11 @@ function selectAction() {
                 break;
             case 'Add New Product':
                 console.log('4');
+                addProduct();
                 break;
             default:
                 console.log('error');
+                connection.end();
         }
       });
   }
