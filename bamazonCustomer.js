@@ -23,10 +23,10 @@ function processOrder(productId, orderQty) {
       var purchaseCost = results[0].price * orderQty;
       console.log("The total cost of your purchase is: $" + purchaseCost);
       console.log("The new stock level is: " + newStockLevel);
-      var updateStockLevelQuery =
-        "UPDATE products SET stock_quantity = ? WHERE item_id = ?";
-      console.log(updateStockLevelQuery);
-      connection.query(updateStockLevelQuery, [newStockLevel, productId]);
+      var updateStockAndSalesQuery =
+        "UPDATE products SET stock_quantity = ?, product_sales = product_sales + ? WHERE item_id = ?";
+      console.log(updateStockAndSalesQuery);
+      connection.query(updateStockAndSalesQuery, [newStockLevel, purchaseCost ,productId]);
     }
     connection.end();
   });
