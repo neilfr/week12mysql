@@ -12,7 +12,6 @@ var connection = mysql.createConnection({
 
 function displayStock() {
     var displayStockQuery = "SELECT * from products;";
-//    console.log(displayStockQuery);
     connection.query(displayStockQuery, [], function(error, results) {
       if (error) throw error;
       console.table(results);
@@ -22,7 +21,6 @@ function displayStock() {
 
   function displayLowStock() {
     var displayLowStockQuery = "SELECT * from products WHERE stock_quantity <5;";
-//    console.log(displayLowStockQuery);
     connection.query(displayLowStockQuery, [], function(error, results) {
       if (error) throw error;
       console.table(results);
@@ -33,11 +31,9 @@ function displayStock() {
 function addInventory() {
     var productListQuery = "SELECT product_name from products;";
     var productList=[];
-//    console.log(productListQuery);
     connection.query(productListQuery, [], function(error, results) {
       if (error) throw error;
       for (i = 0; i < results.length; i++) { 
-//        console.log(results[i].product_name);
         productList[i]=results[i].product_name;
       }
       pickProduct(productList);
@@ -45,9 +41,6 @@ function addInventory() {
 }
 
 function pickProduct(productList){
-//    for (i=0;i<productList.length;i++){
-//      console.log("product "+i+" is "+productList[i]);
-//    }
     inquirer
     .prompt([
       {
@@ -63,10 +56,6 @@ function pickProduct(productList){
       }
     ])
     .then(function(response) {
-  //    console.log("The product you chose is:");
-  //    console.log(response.product);
-  //    console.log("And you want to increment the stock by:");
-  //    console.log(response.addQty);
       var addStockQuery = 'UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_name = ?;'
       connection.query(addStockQuery, [response.addQty, response.product]);
       connection.end();
@@ -76,11 +65,9 @@ function pickProduct(productList){
 function addProduct(){
     var departmentListQuery = "SELECT department_name from departments;";
     var departmentList=[];
-//    console.log(departmentListQuery);
     connection.query(departmentListQuery, [], function(error, results) {
       if (error) throw error;
       for (i = 0; i < results.length; i++) { 
-//        console.log(results[i].department_name);
         departmentList[i]=results[i].department_name;
       }
       pickDepartment(departmentList);
@@ -88,9 +75,6 @@ function addProduct(){
   }
 
 function pickDepartment(departmentList){
-//  console.log("add a product!");
-//  console.log("departmentList contains:");
-//  console.log(departmentList);
   inquirer
   .prompt([
     {
@@ -116,16 +100,7 @@ function pickDepartment(departmentList){
     }
   ])
   .then(function(response) {
-//    console.log("The product you want to add is:");
-//    console.log(response.productName);
-//    console.log("The product department is:");
-//    console.log(response.productDepartment);
-//    console.log("The product price is:");
-//    console.log(response.productPrice);
-//    console.log("The initial stock quantity is:");
-//    console.log(response.productStock);
     var newProductQuery = 'INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales ) VALUES (?, ?, ?, ?, 0);';
-//    console.log(newProductQuery);
     connection.query(newProductQuery, [response.productName, response.productDepartment, response.productPrice, response.productStock]);
     connection.end();
   });
@@ -142,23 +117,17 @@ function selectAction() {
         }
       ])
       .then(function(response) {
-//        console.log("Your choice is:");
-//        console.log(response.action);
         switch (response.action){
             case 'View Products for Sale':
-//                console.log('1');
                 displayStock();
                 break;
             case 'View Low Inventory':
-//                console.log('2');
                 displayLowStock();
                 break;
             case 'Add to Inventory':
-//                console.log('3');
                 addInventory();
                 break;
             case 'Add New Product':
-//                console.log('4');
                 addProduct();
                 break;
             default:
