@@ -14,7 +14,7 @@ var connection = mysql.createConnection({
 
 function salesByDepartment(){
     console.log("I'm in! 1");
-    var salesByDepartmentQuery = "SELECT d.department_id, d.department_name, d.over_head_costs, SUM(p.product_sales) FROM departments d, products p WHERE d.department_name = p.department_name GROUP BY d.department_name;";
+    var salesByDepartmentQuery = "SELECT d.department_id, d.department_name, d.over_head_costs, SUM(p.product_sales) AS product_sales , SUM(p.product_sales)-d.over_head_costs AS total_profit FROM departments d, products p WHERE d.department_name = p.department_name GROUP BY d.department_name;";
     console.log(salesByDepartmentQuery);
     connection.query(salesByDepartmentQuery, [], function(error, results) {
       if (error) throw error;
@@ -34,9 +34,30 @@ function salesByDepartment(){
 }
 
 function createNewDepartment(){
-    console.log("I'm in! 2");
-    connection.end();
-}
+    console.log("add a department!");
+    inquirer
+    .prompt([
+      {
+        type:"input",
+        message: "What is the name of the department you would like to add?",
+        name: "departmentName"
+      },
+      {
+        type:"input",
+        message: "What is the overhead for this department?",
+        name: "departmentOverhead"
+      }
+    ])
+    .then(function(response) {
+      console.log("The department you want to add is:");
+      console.log(response.departmentName);
+      console.log("The department overhead is:");
+      console.log(response.departmentOverhead);
+      var newDepartmentQuery = 'INSERT INTO departments (department_name, over_head_costs) VALUES (?, ?);';
+      connection.query(newDepartmentQuery, [response.departmentName, response.departmentOverhead]);
+      connection.end();
+    });
+  }
 
 function selectAction() {
 inquirer
