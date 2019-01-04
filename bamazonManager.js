@@ -136,7 +136,7 @@ function addProduct(){
     console.log(response.productPrice);
     console.log("The initial stock quantity is:");
     console.log(response.productStock);
-    var newProductQuery = 'INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?);';
+    var newProductQuery = 'INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales ) VALUES (?, ?, ?, ?, 0);';
     connection.query(newProductQuery, [response.productName, response.productDepartment, response.productPrice, response.productStock]);
     connection.end();
   });
