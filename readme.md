@@ -43,12 +43,12 @@ simple command line order and inventory system comprised of javascript, node pac
 * ManagerAddProduct2.JPG
 * ![](screenshots/ManagerAddProduct2.JPG)
 * DepartmentsBeforeAdd.JPG
-* ![](screenshots/DepartmentBeforeAdd.JPG)
+* ![](screenshots/DepartmentsBeforeAdd.JPG)
 * DepartmentsAfterAdd.JPG
-* ![](screenshots/DepartmentAfterAdd.JPG)
+* ![](screenshots/DepartmentsAfterAdd.JPG)
 * SupervisorMenu.JPG
-* ![](screenshots/ManagerMenu.JPG)
+* ![](screenshots/SupervisorMenu.JPG)
 * SupervisorViewProduct.JPG
-* ![](screenshots/ManagerMenu.JPG)
+* ![](screenshots/SupervisorViewProduct.JPG)
 * SupervisorAddDept.JPG
-* ![](screenshots/ManagerMenu.JPG)
+* ![](screenshots/SupervisorAddDept.JPG)
