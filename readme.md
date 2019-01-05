@@ -29,6 +29,7 @@ simple command line order and inventory system comprised of javascript, node pac
 * CustomerOrder.JPG
 ![](screenshots/CustomerOrder.JPG)
 * ManagerMenu.JPG
+![](screenshots/ManagerMenu.JPG)
 * ManagerViewProducts.JPG
 * ManagerViewLowStock.JPG
 * ManagerAddInventory1.JPG
