@@ -27,6 +27,8 @@ simple command line order and inventory system comprised of javascript, node pac
 
 ## screenshots - in execution order
 * CustomerOrder.JPG
+![bamazonCustomer.js Customer Order](screenshots/CustomerOrder.JPG)
+Format: ![Alt Text](url)
 * ManagerMenu.JPG
 * ManagerViewProducts.JPG
 * ManagerViewLowStock.JPG
